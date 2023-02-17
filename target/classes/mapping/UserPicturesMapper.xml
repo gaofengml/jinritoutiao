@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mapper.UserPicturesMapper" >
+  <resultMap id="BaseResultMap" type="entity.UserPictures" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="all_id" property="all_id" jdbcType="INTEGER" />
+    <result column="imageUrl" property="imageUrl" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, all_id, imageUrl, status
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from userpictures
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultType="entity.UserPictures">
+    select * from userpictures
+  </select>
+  <select id="getTotalPageNumSuCai" resultType="java.lang.Integer">
+    select ceil(count(1)/24) from userpictures
+  </select>
+  <select id="selectByCollected" resultType="entity.UserPictures">
+    select * from userpictures where status='1'
+  </select>
+  <select id="getTotalPageNumSuCaiCollected" resultType="java.lang.Integer">
+    select ceil(count(1)/24) from userpictures where status='1'
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from userpictures
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="entity.UserPictures" >
+    insert into userpictures ( all_id, imageUrl,
+      status)
+    values ( #{all_id,jdbcType=INTEGER}, #{imageUrl,jdbcType=VARCHAR},
+      #{status,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="entity.UserPictures" >
+    insert into userpictures
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="all_id != null" >
+        all_id,
+      </if>
+      <if test="imageUrl != null" >
+        imageUrl,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="all_id != null" >
+        #{all_id,jdbcType=INTEGER},
+      </if>
+      <if test="imageUrl != null" >
+        #{imageUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="entity.UserPictures" >
+    update userpictures
+    <set >
+      <if test="all_id != null" >
+        all_id = #{all_id,jdbcType=INTEGER},
+      </if>
+      <if test="imageUrl != null" >
+        imageUrl = #{imageUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="entity.UserPictures" >
+    update userpictures
+    set all_id = #{all_id,jdbcType=INTEGER},
+      imageUrl = #{imageUrl,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateStatusById">
+    update userpictures
+    set
+        status = #{status,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

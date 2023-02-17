@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mapper.FansdetailsMapper" >
+  <resultMap id="BaseResultMap" type="entity.Fansdetails" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="admin_id" property="admin_id" jdbcType="INTEGER" />
+    <result column="time" property="time" jdbcType="VARCHAR" />
+    <result column="fansNum" property="fansNum" jdbcType="INTEGER" />
+    <result column="fansReadNum" property="fansReadNum" jdbcType="INTEGER" />
+    <result column="fansMoney" property="fansMoney" jdbcType="VARCHAR" />
+    <result column="delfocus" property="delfocus" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, admin_id, time, fansNum, fansReadNum, fansMoney, delfocus
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from fansdetails
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultType="entity.Fansdetails">
+    select * from fansdetails
+  </select>
+  <select id="getTotalPageNum" resultType="java.lang.Integer">
+    select ceil(count(1)/6) from fansdetails
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from fansdetails
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="entity.Fansdetails" >
+    insert into fansdetails (id, admin_id, time, 
+      fansNum, fansReadNum, fansMoney, 
+      delfocus)
+    values (#{id,jdbcType=INTEGER}, #{admin_id,jdbcType=INTEGER}, #{time,jdbcType=VARCHAR}, 
+      #{fansNum,jdbcType=INTEGER}, #{fansReadNum,jdbcType=INTEGER}, #{fansMoney,jdbcType=VARCHAR}, 
+      #{delfocus,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="entity.Fansdetails" >
+    insert into fansdetails
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="admin_id != null" >
+        admin_id,
+      </if>
+      <if test="time != null" >
+        time,
+      </if>
+      <if test="fansNum != null" >
+        fansNum,
+      </if>
+      <if test="fansReadNum != null" >
+        fansReadNum,
+      </if>
+      <if test="fansMoney != null" >
+        fansMoney,
+      </if>
+      <if test="delfocus != null" >
+        delfocus,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="admin_id != null" >
+        #{admin_id,jdbcType=INTEGER},
+      </if>
+      <if test="time != null" >
+        #{time,jdbcType=VARCHAR},
+      </if>
+      <if test="fansNum != null" >
+        #{fansNum,jdbcType=INTEGER},
+      </if>
+      <if test="fansReadNum != null" >
+        #{fansReadNum,jdbcType=INTEGER},
+      </if>
+      <if test="fansMoney != null" >
+        #{fansMoney,jdbcType=VARCHAR},
+      </if>
+      <if test="delfocus != null" >
+        #{delfocus,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="entity.Fansdetails" >
+    update fansdetails
+    <set >
+      <if test="admin_id != null" >
+        admin_id = #{admin_id,jdbcType=INTEGER},
+      </if>
+      <if test="time != null" >
+        time = #{time,jdbcType=VARCHAR},
+      </if>
+      <if test="fansNum != null" >
+        fansNum = #{fansNum,jdbcType=INTEGER},
+      </if>
+      <if test="fansReadNum != null" >
+        fansReadNum = #{fansReadNum,jdbcType=INTEGER},
+      </if>
+      <if test="fansMoney != null" >
+        fansMoney = #{fansMoney,jdbcType=VARCHAR},
+      </if>
+      <if test="delfocus != null" >
+        delfocus = #{delfocus,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="entity.Fansdetails" >
+    update fansdetails
+    set admin_id = #{admin_id,jdbcType=INTEGER},
+      time = #{time,jdbcType=VARCHAR},
+      fansNum = #{fansNum,jdbcType=INTEGER},
+      fansReadNum = #{fansReadNum,jdbcType=INTEGER},
+      fansMoney = #{fansMoney,jdbcType=VARCHAR},
+      delfocus = #{delfocus,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

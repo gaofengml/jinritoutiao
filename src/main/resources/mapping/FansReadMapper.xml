@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mapper.FansReadMapper" >
+  <resultMap id="BaseResultMap" type="entity.FansRead" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="admin_id" property="admin_id" jdbcType="INTEGER" />
+    <result column="readNum" property="readNum" jdbcType="INTEGER" />
+    <result column="readTime" property="readTime" jdbcType="DATE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, admin_id, readNum, readTime
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from fans_read
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from fans_read
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="entity.FansRead" >
+    insert into fans_read (id, admin_id, readNum, 
+      readTime)
+    values (#{id,jdbcType=INTEGER}, #{admin_id,jdbcType=INTEGER}, #{readNum,jdbcType=INTEGER}, 
+      #{readTime,jdbcType=DATE})
+  </insert>
+  <insert id="insertSelective" parameterType="entity.FansRead" >
+    insert into fans_read
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="admin_id != null" >
+        admin_id,
+      </if>
+      <if test="readNum != null" >
+        readNum,
+      </if>
+      <if test="readTime != null" >
+        readTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="admin_id != null" >
+        #{admin_id,jdbcType=INTEGER},
+      </if>
+      <if test="readNum != null" >
+        #{readNum,jdbcType=INTEGER},
+      </if>
+      <if test="readTime != null" >
+        #{readTime,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="entity.FansRead" >
+    update fans_read
+    <set >
+      <if test="admin_id != null" >
+        admin_id = #{admin_id,jdbcType=INTEGER},
+      </if>
+      <if test="readNum != null" >
+        readNum = #{readNum,jdbcType=INTEGER},
+      </if>
+      <if test="readTime != null" >
+        readTime = #{readTime,jdbcType=DATE},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="entity.FansRead" >
+    update fans_read
+    set admin_id = #{admin_id,jdbcType=INTEGER},
+      readNum = #{readNum,jdbcType=INTEGER},
+      readTime = #{readTime,jdbcType=DATE}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

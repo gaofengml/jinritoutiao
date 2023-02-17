@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mapper.ArticalMapper" >
+  <resultMap id="BaseResultMap" type="entity.Artical" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="admin_id" property="admin_id" jdbcType="INTEGER" />
+    <result column="articalTitle" property="articalTitle" jdbcType="VARCHAR" />
+    <result column="readNum" property="readNum" jdbcType="INTEGER" />
+    <result column="fansReadNum" property="fansReadNum" jdbcType="INTEGER" />
+    <result column="collectNum" property="collectNum" jdbcType="INTEGER" />
+    <result column="upvoteNum" property="upvoteNum" jdbcType="INTEGER" />
+    <result column="fansUpvoteNum" property="fansUpvoteNum" jdbcType="INTEGER" />
+    <result column="sendTime" property="sendTime" jdbcType="VARCHAR" />
+    <result column="imageUrl" property="imageUrl" jdbcType="VARCHAR" />
+    <result column="pd_id" property="pd_id" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="entity.Artical" extends="BaseResultMap" >
+    <result column="articalText" property="articalText" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, admin_id, articalTitle, readNum, fansReadNum, collectNum, upvoteNum, fansUpvoteNum, 
+    sendTime, imageUrl, pd_id, status
+  </sql>
+  <sql id="Blob_Column_List" >
+    articalText
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from artical
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+    <select id="selectAll" resultType="entity.Artical">
+      select
+        id, articalTitle,
+        readNum, collectNum,
+        upvoteNum,sendTime,imageUrl
+      from artical
+    </select>
+  <select id="getTotalPageNum" resultType="java.lang.Integer">
+    select ceil(count(1)/6) from artical
+  </select>
+  <select id="selectByToday" resultType="entity.Artical">
+    select
+      id, articalTitle,
+      readNum, collectNum,
+      upvoteNum
+    from artical
+    where sendTime=#{sendTime}
+  </select>
+  <select id="getTotalNumToday" resultType="java.lang.Integer">
+    select ceil(count(1)/6) from artical where sendTime=#{sendTime}
+  </select>
+  <select id="selectByThisWeek" resultType="entity.Artical">
+    select
+      id, articalTitle,
+      readNum, collectNum,
+      upvoteNum
+    from artical
+    WHERE sendTime
+    between #{arg0} and #{arg1}
+    ORDER BY sendTime
+  </select>
+  <select id="getTotalNumWeek" resultType="java.lang.Integer">
+    select ceil(count(1)/6)
+    from artical
+    WHERE sendTime
+    between #{arg0} and #{arg1}
+    ORDER BY sendTime
+  </select>
+  <select id="selectBySevenDays" resultType="entity.Artical">
+    select
+      id, articalTitle,
+      readNum, collectNum,
+      upvoteNum
+    from artical
+    WHERE sendTime
+            between #{arg0} and #{arg1}
+    ORDER BY sendTime
+  </select>
+  <select id="getTotalNumSevenDays" resultType="java.lang.Integer">
+    select ceil(count(1)/6)
+    from artical
+    WHERE sendTime
+            between #{arg0} and #{arg1}
+    ORDER BY sendTime
+  </select>
+  <select id="selectByMonthDays" resultType="entity.Artical">
+    select
+      id, articalTitle,
+      readNum, collectNum,
+      upvoteNum
+    from artical
+    WHERE sendTime
+            between #{arg0} and #{arg1}
+    ORDER BY sendTime
+  </select>
+  <select id="getTotalNumMonthDays" resultType="java.lang.Integer">
+    select ceil(count(1)/6)
+    from artical
+    WHERE sendTime
+            between #{arg0} and #{arg1}
+    ORDER BY sendTime
+  </select>
+  <select id="selectByTimeRange" resultType="entity.Artical">
+    select
+      id, articalTitle,
+      readNum, collectNum,
+      upvoteNum
+    from artical
+    WHERE sendTime
+            between #{arg0} and #{arg1}
+    ORDER BY sendTime
+  </select>
+  <select id="getTotalNumTimeRange" resultType="java.lang.Integer">
+    select ceil(count(1)/6)
+    from artical
+    WHERE sendTime
+            between #{arg0} and #{arg1}
+    ORDER BY sendTime
+  </select>
+  <select id="getTotalPageNumNr" resultType="java.lang.Integer">
+    select ceil(count(1)/10) from artical
+  </select>
+  <select id="selectByArticleId" resultType="entity.Artical">
+    select * from artical where id=#{id}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from artical
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="entity.Artical" >
+    insert into artical (admin_id, articalTitle,
+      readNum, fansReadNum, collectNum, 
+      upvoteNum, fansUpvoteNum, sendTime, 
+      imageUrl, pd_id, status, 
+      articalText)
+    values ( #{admin_id,jdbcType=INTEGER}, #{articalTitle,jdbcType=VARCHAR},
+      #{readNum,jdbcType=INTEGER}, #{fansReadNum,jdbcType=INTEGER}, #{collectNum,jdbcType=INTEGER}, 
+      #{upvoteNum,jdbcType=INTEGER}, #{fansUpvoteNum,jdbcType=INTEGER}, #{sendTime,jdbcType=VARCHAR}, 
+      #{imageUrl,jdbcType=VARCHAR}, #{pd_id,jdbcType=INTEGER}, #{status,jdbcType=VARCHAR}, 
+      #{articalText,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="entity.Artical" >
+    insert into artical
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="admin_id != null" >
+        admin_id,
+      </if>
+      <if test="articalTitle != null" >
+        articalTitle,
+      </if>
+      <if test="readNum != null" >
+        readNum,
+      </if>
+      <if test="fansReadNum != null" >
+        fansReadNum,
+      </if>
+      <if test="collectNum != null" >
+        collectNum,
+      </if>
+      <if test="upvoteNum != null" >
+        upvoteNum,
+      </if>
+      <if test="fansUpvoteNum != null" >
+        fansUpvoteNum,
+      </if>
+      <if test="sendTime != null" >
+        sendTime,
+      </if>
+      <if test="imageUrl != null" >
+        imageUrl,
+      </if>
+      <if test="pd_id != null" >
+        pd_id,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="articalText != null" >
+        articalText,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="admin_id != null" >
+        #{admin_id,jdbcType=INTEGER},
+      </if>
+      <if test="articalTitle != null" >
+        #{articalTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="readNum != null" >
+        #{readNum,jdbcType=INTEGER},
+      </if>
+      <if test="fansReadNum != null" >
+        #{fansReadNum,jdbcType=INTEGER},
+      </if>
+      <if test="collectNum != null" >
+        #{collectNum,jdbcType=INTEGER},
+      </if>
+      <if test="upvoteNum != null" >
+        #{upvoteNum,jdbcType=INTEGER},
+      </if>
+      <if test="fansUpvoteNum != null" >
+        #{fansUpvoteNum,jdbcType=INTEGER},
+      </if>
+      <if test="sendTime != null" >
+        #{sendTime,jdbcType=VARCHAR},
+      </if>
+      <if test="imageUrl != null" >
+        #{imageUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="pd_id != null" >
+        #{pd_id,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="articalText != null" >
+        #{articalText,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="entity.Artical" >
+    update artical
+    <set >
+      <if test="admin_id != null" >
+        admin_id = #{admin_id,jdbcType=INTEGER},
+      </if>
+      <if test="articalTitle != null" >
+        articalTitle = #{articalTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="readNum != null" >
+        readNum = #{readNum,jdbcType=INTEGER},
+      </if>
+      <if test="fansReadNum != null" >
+        fansReadNum = #{fansReadNum,jdbcType=INTEGER},
+      </if>
+      <if test="collectNum != null" >
+        collectNum = #{collectNum,jdbcType=INTEGER},
+      </if>
+      <if test="upvoteNum != null" >
+        upvoteNum = #{upvoteNum,jdbcType=INTEGER},
+      </if>
+      <if test="fansUpvoteNum != null" >
+        fansUpvoteNum = #{fansUpvoteNum,jdbcType=INTEGER},
+      </if>
+      <if test="sendTime != null" >
+        sendTime = #{sendTime,jdbcType=VARCHAR},
+      </if>
+      <if test="imageUrl != null" >
+        imageUrl = #{imageUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="pd_id != null" >
+        pd_id = #{pd_id,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="articalText != null" >
+        articalText = #{articalText,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="entity.Artical" >
+    update artical
+    set admin_id = #{admin_id,jdbcType=INTEGER},
+      articalTitle = #{articalTitle,jdbcType=VARCHAR},
+      readNum = #{readNum,jdbcType=INTEGER},
+      fansReadNum = #{fansReadNum,jdbcType=INTEGER},
+      collectNum = #{collectNum,jdbcType=INTEGER},
+      upvoteNum = #{upvoteNum,jdbcType=INTEGER},
+      fansUpvoteNum = #{fansUpvoteNum,jdbcType=INTEGER},
+      sendTime = #{sendTime,jdbcType=VARCHAR},
+      imageUrl = #{imageUrl,jdbcType=VARCHAR},
+      pd_id = #{pd_id,jdbcType=INTEGER},
+      status = #{status,jdbcType=VARCHAR},
+      articalText = #{articalText,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="entity.Artical" >
+    update artical
+    set admin_id = #{admin_id,jdbcType=INTEGER},
+      articalTitle = #{articalTitle,jdbcType=VARCHAR},
+      readNum = #{readNum,jdbcType=INTEGER},
+      fansReadNum = #{fansReadNum,jdbcType=INTEGER},
+      collectNum = #{collectNum,jdbcType=INTEGER},
+      upvoteNum = #{upvoteNum,jdbcType=INTEGER},
+      fansUpvoteNum = #{fansUpvoteNum,jdbcType=INTEGER},
+      sendTime = #{sendTime,jdbcType=VARCHAR},
+      imageUrl = #{imageUrl,jdbcType=VARCHAR},
+      pd_id = #{pd_id,jdbcType=INTEGER},
+      status = #{status,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateReadNumByArticleId">
+    update artical
+    set readNum =readNum+1
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+</mapper>
